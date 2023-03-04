@@ -34,7 +34,7 @@ class RFIDMultiReader():
             GPIO.output(self.boards[loop_id], loop_id == rid)
         return True
 
-    def read(self, rid):
+    def read(self, rid) -> str | None:
         if not self.selectBoard(rid):
             return None
 
