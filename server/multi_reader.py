@@ -6,12 +6,12 @@ class RFIDMultiReader():
     def __init__(self, bus=0, device=0, spd=1000000):
         self.reader = SimpleMFRC522()
         self.close()
-        self.bus
         self.boards = {}
         
         self.bus = bus
         self.device = device
         self.spd = spd
+        GPIO.setmode(GPIO.BOARD)
 
     def reinit(self):
         self.reader.READER.spi = spidev.SpiDev()
@@ -23,6 +23,7 @@ class RFIDMultiReader():
         self.reader.READER.spi.close()
 
     def addBoard(self, rid, pin):
+        GPIO.setup(pin, 0)
         self.boards[rid] = pin
 
     def selectBoard(self, rid):
@@ -34,7 +35,7 @@ class RFIDMultiReader():
             GPIO.output(self.boards[loop_id], loop_id == rid)
         return True
 
-    def read(self, rid) -> str | None:
+    def read(self, rid):
         if not self.selectBoard(rid):
             return None
 

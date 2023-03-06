@@ -3,9 +3,10 @@ import asyncio
 import socketio
 import multi_reader
 import time
+import RPi.GPIO as GPIO
 
 # ADJUST AS NEEDED
-READ_WAIT_TIME = 2 # This is the time in seconds that the program pauses after one read
+READ_WAIT_TIME = 0.5 # This is the time in seconds that the program pauses after one read
 LEFT_READER_PORTS: list[int] = []
 RIGHT_READER_PORTS: list[int] = []
 
@@ -52,7 +53,7 @@ async def poll_readers():
     """
     while True:
         for port in READER_PORTS:
-            v: str | None = rmr.read(str(port))
+            v = rmr.read(str(port))
             if v:
                 s_i, p_i = ids[port]
                 data[s_i][p_i] = v
@@ -67,19 +68,23 @@ async def socket_server():
     await asyncio.Event().wait()
 
 if __name__ == "__main__":
-    print("[BOOT] Adding boards to Multi Reader...")
-    for port in READER_PORTS:
-        print("[BOOT] Added board with ID: {i} and PORT: {FIRST_PORT + i}")
-        rmr.addBoard(str(port), port) 
+    try:
+        print("[BOOT] Adding boards to Multi Reader...")
+        for port in READER_PORTS:
+            print("[BOOT] Added board with ID: {i} and PORT: {FIRST_PORT + i}")
+            rmr.addBoard(str(port), port) 
 
-    print("[BOOT] Boards added to multi reader...")
-    print("[BOOT] Pausing for 5 seconds to warm up electronics...")
+        print("[BOOT] Boards added to multi reader...")
+        print("[BOOT] Pausing for 5 seconds to warm up electronics...")
 
-    time.sleep(BOOT_TIME_SLEEP)
-    print("[BOOT] Ready: running...")
+        time.sleep(BOOT_TIME_SLEEP)
+        print("[BOOT] Ready: running...")
 
-    loop = asyncio.new_event_loop()
-    loop.create_task(socket_server())
-    loop.create_task(poll_readers())
-    loop.create_task(broadcast_data())
-    loop.run_forever()
+        loop = asyncio.new_event_loop()
+        loop.create_task(socket_server())
+        loop.create_task(poll_readers())
+        loop.create_task(broadcast_data())
+        loop.run_forever()
+
+    except:
+        GPIO.cleanup()
