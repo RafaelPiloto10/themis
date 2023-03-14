@@ -59,6 +59,10 @@ async def poll_readers():
                     s_i, p_i = ids[port]
                     data[s_i][p_i] = v
                     print(f"{s_i} {p_i} {v}")
+                else:
+                    s_i, p_i = ids[port]
+                    data[s_i][p_i] = ""
+
                 await asyncio.sleep(READ_WAIT_TIME)
 
 async def socket_server():
