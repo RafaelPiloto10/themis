@@ -6,7 +6,7 @@ import time
 import RPi.GPIO as GPIO
 
 # ADJUST AS NEEDED
-READ_WAIT_TIME = 0.5 # This is the time in seconds that the program pauses after one read
+READ_WAIT_TIME = 0.01 # This is the time in seconds that the program pauses after one read
 LEFT_READER_PORTS: list[int] = [7, 13, 33, 40, 37, 15, 16, 32, 38, 35]
 RIGHT_READER_PORTS: list[int] = [11, 12, 8, 10, 18, 22, 29, 31, 36, 26]
 
@@ -58,6 +58,7 @@ async def poll_readers():
                 if v:
                     s_i, p_i = ids[port]
                     data[s_i][p_i] = v
+                    print(f"{s_i} {p_i} {v}")
                 await asyncio.sleep(READ_WAIT_TIME)
 
 async def socket_server():
