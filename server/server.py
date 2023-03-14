@@ -7,8 +7,8 @@ import RPi.GPIO as GPIO
 
 # ADJUST AS NEEDED
 READ_WAIT_TIME = 0.5 # This is the time in seconds that the program pauses after one read
-LEFT_READER_PORTS: list[int] = []
-RIGHT_READER_PORTS: list[int] = []
+LEFT_READER_PORTS: list[int] = [7, 13, 33, 40, 37, 15, 16, 32, 38, 35]
+RIGHT_READER_PORTS: list[int] = [11, 12, 8, 10, 18, 22, 29, 31, 36, 26]
 
 # DO NOT CHANGE ANYTHING BELOW THIS LINE
 BOOT_TIME_SLEEP = 5 # This is the time in seconds that the program pauses to warm up electronics
@@ -52,12 +52,13 @@ async def poll_readers():
     we do not need a lock
     """
     while True:
-        for port in READER_PORTS:
-            v = rmr.read(str(port))
-            if v:
-                s_i, p_i = ids[port]
-                data[s_i][p_i] = v
-            await asyncio.sleep(READ_WAIT_TIME)
+        for side in READER_PORTS:
+            for port in side:
+                v = rmr.read(str(port))
+                if v:
+                    s_i, p_i = ids[port]
+                    data[s_i][p_i] = v
+                await asyncio.sleep(READ_WAIT_TIME)
 
 async def socket_server():
     print("[SERVER]: running app")
@@ -70,9 +71,10 @@ async def socket_server():
 if __name__ == "__main__":
     try:
         print("[BOOT] Adding boards to Multi Reader...")
-        for port in READER_PORTS:
-            print("[BOOT] Added board with ID: {i} and PORT: {FIRST_PORT + i}")
-            rmr.addBoard(str(port), port) 
+        for side in READER_PORTS:
+            for port in side:
+                print(f"[BOOT] Added board with PORT: {port}")
+                rmr.addBoard(str(port), port) 
 
         print("[BOOT] Boards added to multi reader...")
         print("[BOOT] Pausing for 5 seconds to warm up electronics...")

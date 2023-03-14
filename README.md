@@ -1,4 +1,4 @@
-# RFID Readers
+# RFID Reader
 
 ## Installation
 
@@ -10,6 +10,13 @@
 - NodeJS/pnpm
 	- install several dependencies:
 		- `pnpm install`
+
+- Cron Job
+	- ```
+		@reboot python3 server.py &
+		@reboot pnpm run &
+		@reboot xdg-open http://localhost:3000
+	  ```
 
 ## Running
 
