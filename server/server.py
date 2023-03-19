@@ -1,14 +1,14 @@
 from aiohttp import web
 import asyncio
 import socketio
-import multi_reader
+# import multi_reader
 import time
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 
 # ADJUST AS NEEDED
 READ_WAIT_TIME = 0.01 # This is the time in seconds that the program pauses after one read
-LEFT_READER_PORTS: list[int] = [7, 13, 33, 40, 37, 15, 16, 32, 38, 35]
-RIGHT_READER_PORTS: list[int] = [11, 12, 8, 10, 18, 22, 29, 31, 36, 26]
+LEFT_READER_PORTS = [7, 13, 33, 40, 37, 15, 16, 32, 38, 35]
+RIGHT_READER_PORTS = [11, 12, 8, 10, 18, 22, 29, 31, 36, 26]
 
 # DO NOT CHANGE ANYTHING BELOW THIS LINE
 BOOT_TIME_SLEEP = 5 # This is the time in seconds that the program pauses to warm up electronics
@@ -20,7 +20,7 @@ for s_i, side in enumerate(READER_PORTS):
     for p_i, port in enumerate(side):
         ids[port] = (s_i, p_i)
 
-rmr = multi_reader.RFIDMultiReader()
+# rmr = multi_reader.RFIDMultiReader()
 
 sio = socketio.AsyncServer(async_mode='aiohttp', cors_allowed_origins='*')
 app = web.Application()
@@ -52,9 +52,10 @@ async def poll_readers():
     we do not need a lock
     """
     while True:
-        for side in READER_PORTS:
+        for i, side in enumerate(READER_PORTS):
             for port in side:
-                v = rmr.read(str(port))
+                v = "divorce" if i == 0 else "justice"
+                # v = rmr.read(str(port))
                 if v:
                     s_i, p_i = ids[port]
                     data[s_i][p_i] = v
@@ -79,7 +80,7 @@ if __name__ == "__main__":
         for side in READER_PORTS:
             for port in side:
                 print(f"[BOOT] Added board with PORT: {port}")
-                rmr.addBoard(str(port), port) 
+                # rmr.addBoard(str(port), port) 
 
         print("[BOOT] Boards added to multi reader...")
         print("[BOOT] Pausing for 5 seconds to warm up electronics...")
@@ -94,4 +95,5 @@ if __name__ == "__main__":
         loop.run_forever()
 
     except:
-        GPIO.cleanup()
+        pass
+        # GPIO.cleanup()

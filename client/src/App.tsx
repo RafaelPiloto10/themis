@@ -10,6 +10,10 @@ function App() {
 	const [isConnected, setIsConnected] = useState(false);
 	const [leftWords, setLeftWords] = useState<string[]>([]);
 	const [rightWords, setRightWords] = useState<string[]>([]);
+
+	const [color, setColor] = useState(window.localStorage.getItem("color") === "true");
+	const [inverted, setInverted] = useState(window.localStorage.getItem("inverted") === "true");
+
 	const [socket, setSocket] = useState<Socket | null>(null);
 
 	useEffect(() => {
@@ -37,8 +41,9 @@ function App() {
 
 	return (
 		<div className="App overflow-hidden">
-			<Navbar connected={isConnected} />
-			<Seesaw left={leftWords} right={rightWords} />
+			<Navbar connected={isConnected} color={color} setColor={setColor} inverted={inverted} setInverted={setInverted} />
+			<Seesaw color={color} left={inverted ? rightWords : leftWords} right={inverted ? leftWords : rightWords} />
+			<h1 className="text-xl mt-5">Subtitle here</h1>
 		</div>
 	);
 }
