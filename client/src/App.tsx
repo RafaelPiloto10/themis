@@ -40,10 +40,10 @@ function App() {
 	}, [setSocket]);
 
 	return (
-		<div className="App overflow-hidden">
+		<div className="App">
 			<Navbar connected={isConnected} color={color} setColor={setColor} inverted={inverted} setInverted={setInverted} />
 			<Seesaw color={color} left={inverted ? rightWords : leftWords} right={inverted ? leftWords : rightWords} />
-			<h1 className="text-xl mt-5">Subtitle here</h1>
+			<h1 className="text-xl">stephaniebphotos.com/seesaw</h1>
 		</div>
 	);
 }

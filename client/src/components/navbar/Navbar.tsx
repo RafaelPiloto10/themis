@@ -19,7 +19,7 @@ export default function Navbar(props: { color: boolean, setColor: any, inverted:
 
 				{popup && <SettingsPopup close={() => setPopup(false)}color={props.color} setColor={props.setColor} inverted={props.inverted} setInverted={props.setInverted} />}
 			</div>
-			<h1 className="text-4xl">Art Gallery Title Here</h1>
+			<h1 className="text-4xl">{props.color ? "SEESAW A" : "SEESAW B"}</h1>
 		</div>
 	);
 }
