@@ -1,5 +1,5 @@
 export default function Seesaw(props: { color: boolean, left: string[], right: string[] }): JSX.Element {
-	const color = props.color ? "border-blue-500" : "border-green-500";
+	const color = props.color ? "border-blue-500" : "border-yellow-500";
 
 	return (
 		<div className="w-full h-[600px] flex justify-center mt-3 border-box p-2">
