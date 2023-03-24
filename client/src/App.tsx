@@ -40,9 +40,11 @@ function App() {
 	}, [setSocket]);
 
 	return (
-		<div className="App">
+		<div className="App flex flex-col">
 			<Navbar connected={isConnected} color={color} setColor={setColor} inverted={inverted} setInverted={setInverted} />
-			<Seesaw color={color} left={inverted ? rightWords : leftWords} right={inverted ? leftWords : rightWords} />
+			<div className='flex-grow'>
+				<Seesaw color={color} left={inverted ? rightWords : leftWords} right={inverted ? leftWords : rightWords} />
+			</div>
 			<h1 className="text-xl">stephaniebphotos.com/seesaw</h1>
 		</div>
 	);

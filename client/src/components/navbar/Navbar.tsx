@@ -7,7 +7,7 @@ export default function Navbar(props: { color: boolean, setColor: any, inverted:
 
 	return (
 		<div className="flex flex-col w-full">
-			<div className="flex flex-row gap-2 pr-5 border-box justify-end">
+			<div className="flex flex-row gap-4 pr-5 border-box justify-end">
 				<Connection connected={props.connected} />
 
 				<button onClick={() => setPopup(true)}>
